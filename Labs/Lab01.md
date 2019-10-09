@@ -22,7 +22,7 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab01)
 
 -   Create a new project in Visual Studio, select the `Empty Bot` template. Enter `DevDaysBot` as the project name. You can choose any other name you like here, but the workshop will follow said name.
 
-![lab01 - New Project](../Resources/Images/lab01_01.png)
+![lab01 - New Project](../Resources/Images/Lab01_01.PNG)
 
 -   The template we use to create the project does not generate the name entered. Therefore, when the project has been created, navigate to the following two files and change the following:
 
@@ -32,7 +32,7 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab01)
 
 -   Start the project and verify that it runs correctly, you should see this in your browser:
 
-![lab01 - New project](../Resources/Images/lab01_02.png)
+![lab01 - New project](../Resources/Images/Lab01_02.PNG)
 <br/>
 
 **1.2 Setting up the Emulator)**
@@ -46,7 +46,7 @@ Now that the project in running we can use the Bot Framework Emulator to test ou
 -   Click `Save and connect`, save the .bot file in the project you created.
 -   You are now able to communicate with the bot and see the _'Hello world!'_ message. The bot doesn't do much at this moment though, lets change that.
 
-![lab01 - Emulator](../Resources/Images/lab01_03.png)
+![lab01 - Emulator](../Resources/Images/Lab01_03.PNG)
 <br/>
 
 ---
@@ -174,7 +174,7 @@ In this function we want to check whether the name of the user is already known,
     <br/>
 -   In the Bot Emulator, select `Restart with same user ID` to simulate a new conversation with the same user. Notice how the the bot starts the conversation by asking our name. Since our name is already known, we don't want that, we want the bot to welcome us back. Lets add that.
 
-![lab01 - Emulator restart with same user ID](../Resources/Images/lab01_04.png)
+![lab01 - Emulator restart with same user ID](../Resources/Images/Lab01_04.PNG)
 <br/>
 
 -   Replace the implementation of the `OnMembersAddedAsync` function in `DevDaysBot.cs` with the following:
@@ -215,7 +215,7 @@ In this function we want to check whether the name of the user is already known,
 
 The bot will now understand these 'commands' and will know how to act on them. Later on we will add more complex commands.
 
-![lab01 - responses](../Resources/Images/lab01_05.png)
+![lab01 - responses](../Resources/Images/Lab01_05.PNG)
 
 ---
 
