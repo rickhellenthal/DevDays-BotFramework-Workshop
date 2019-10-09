@@ -36,6 +36,7 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab01)
 <br/>
 
 **1.2 Setting up the Emulator)**
+
 Now that the project in running we can use the Bot Framework Emulator to test our bot, here we will set this up.
 
 -   In the browser window that popped up, notice the url under the _'Your bot is ready!'_ text. Copy this url.
@@ -113,6 +114,7 @@ Ok, so the user is now prompted to enter their name, but how do we store the res
     <br/>
 
 **2.2 Meeting a new user)**
+
 Alright, so we set up the state, now it's time to interact with it and store the name of the user.
 
 In the `OnMembersAddedAsync` function we ask the user for their name, because of this we have to set our `PromptedForName` property in our `conversationState`. To do this we need to access the state, for this we have accessors.
@@ -152,19 +154,19 @@ In this function we want to check whether the name of the user is already known,
 
 -   Add the following code at the bottom of the `OnMessageActivityAsync` function. This code will store the name after the bot has asked for the name of the user.
 
-        ```C#
-        if (string.IsNullOrEmpty(userProfile.Name) && conversationData.PromptedForName)
-            {
-                userProfile.Name = turnContext.Activity.Text?.Trim();
-                conversationData.PromptedForName = false;
+    ```C#
+    if (string.IsNullOrEmpty(userProfile.Name) && conversationData.PromptedForName)
+        {
+            userProfile.Name = turnContext.Activity.Text?.Trim();
+            conversationData.PromptedForName = false;
 
-                // Acknowledge that we got their name.
-                await turnContext.SendActivityAsync($"Nice to meet you {userProfile.Name}!");
+            // Acknowledge that we got their name.
+            await turnContext.SendActivityAsync($"Nice to meet you {userProfile.Name}!");
 
-                // End the turn here.
-                return;
-            }
-        ```
+            // End the turn here.
+            return;
+        }
+    ```
 
     <br/>
 
@@ -222,4 +224,5 @@ The bot will now understand these 'commands' and will know how to act on them. L
 ### Wrap up
 
 In this lab you created a chat bot which can recognize a returning user and handle a few simple commands. Nice job!
-In the next lab we will integrate [LUIS](https://azure.microsoft.com/nl-nl/services/cognitive-services/language-understanding-intelligent-service/) with our bot
+
+In the next lab we will integrate [LUIS](https://azure.microsoft.com/nl-nl/services/cognitive-services/language-understanding-intelligent-service/) with our bot.
