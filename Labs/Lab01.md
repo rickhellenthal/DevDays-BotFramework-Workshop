@@ -6,7 +6,7 @@ In this lab you'll get to know the Microsoft Bot Framework by creating a chat bo
 
 The finished solutions [can be found here](../Resources/FinishedSolutions/Lab01) and are available for you to compare your work, or to take a look when you're having difficulties executing the assignments.
 
-[Full list of versions used in the workshop](../Resources/VersionsUsed.md)
+> [Full list of versions used in the workshop](../Resources/VersionsUsed.md)
 
 ## **Prerequisites**
 

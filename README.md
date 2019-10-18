@@ -1,6 +1,6 @@
 # **Building your own smart bot**
 
-_Workshop at ilionX's DevDays_
+_Workshop at ilionx's DevDays_
 
 ---
 
@@ -13,3 +13,4 @@ You'll execute two different labs which exists of multiple assignments, these la
 #### **Labs**
 
 1. [Lab 1 - Creating a bot](./Labs/Lab01.md)
+2. [Lab 2 - Implementing LUIS](./Labs/Lab02.md)
