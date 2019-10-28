@@ -14,3 +14,6 @@ You'll execute two different labs which exists of multiple assignments, these la
 
 1. [Lab 1 - Creating a bot](./Labs/Lab01.md)
 2. [Lab 2 - Implementing LUIS](./Labs/Lab02.md)
+3. [Lab 3 - QnA maker and Dispatch tool](./Labs/Lab03.md)
+
+To see what versions were used creating this workshop see [this document](./Resources/VersionsUsed.md).

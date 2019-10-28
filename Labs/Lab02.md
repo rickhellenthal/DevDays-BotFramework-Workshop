@@ -43,7 +43,9 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab02)
 
 ![lab02 - LUIS portal Greeting intent](../Resources/Images/Lab02_03.PNG)
 
--   In the `None` intent, add a couple of random utterances that don't have to do anything with our bot. What you enter here can be anything, be sure however to not make these utterances too similar to any other intents.
+-   Add a `GetLeaveBalance` intent, add utterances like _"How many days do I still have off?"_.
+-   Add a `CallInSickToday` intent, add utterances like _"I'm sick so I can't come to work."_.
+-   In the `None` intent, add a couple of random utterances that don't have to do anything with our bot.
 -   Add a `Help` intent, we will use this to enable the bot to explain what its purpose is. Example utterances are:
     -   _Who are you?_
     -   _What can you do?_
@@ -72,7 +74,7 @@ Now that we have some intents set up we can train our LUIS application to try to
 
 ## Assignment 2
 
-**1.1 Creating Middleware)**
+**2.1 Creating Middleware)**
 
 In this assignment we will use the LUIS application we created from within our bot. This will allow it to better understand the user's intentions, therefore improving the user experience. We want to know what the user means with the message they send before we continue with our logic. To achieve this we will create custom [middleware](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-middleware?view=azure-bot-service-4.0).
 
@@ -120,7 +122,7 @@ First of all, we'll need to install a NuGet package which will allow us to easil
                 var recognizerResult = await luisRecognizer.RecognizeAsync(turnContext, cancellationToken);
                 var (intent, score) = recognizerResult.GetTopScoringIntent();
 
-            turnContext.TurnState.Add("Intent", intent);
+                turnContext.TurnState.Add("Intent", intent);
             }
             await next(cancellationToken);
         }
@@ -128,4 +130,52 @@ First of all, we'll need to install a NuGet package which will allow us to easil
 
 <br>
 
-We've created our custom middleware, nice work! Lets now start using it.
+**2.2 Using our custom middleware)**
+
+We've created our custom middleware, nice work! Lets now start using it. First we need to tell our bot to run the code we've written in our custom middleware.
+
+Middleware is added via adapters. The project template created an adapter for us, we can simply use that one.
+
+-   In the `AdapterWithErrorHandler.cs` file, import the namespace the IntentRecognizerMiddleware resides in.
+-   In the same file, add the following line before the `OnTurnError` in the constructor:
+    ```C#
+    // Our custom middleware
+    Use(new IntentRecognizerMiddleware(configuration));
+    ```
+
+<br>
+
+-   In the `DevDaysBot.cs` file, add the following line above the start of the switch statement:
+    ```C#
+    string intent = turnContext.TurnState.Get<string>("Intent");
+    ```
+-   Alter the switch to use this intent as the expression.
+
+-   Run the bot again and verify that the bot understands the `greeting`, `goodbye`, and `help` 'command'.
+
+-   Add a case for `GetLeaveBalance`, enter the following code there:
+    ```C#
+    Random random = new Random();
+    // In a real application we would want to fetch the remaining leave hours from an actual source.
+    // For the purpose of this workshop a random number is generated.
+    await turnContext.SendActivityAsync($"You have {random.Next(1, 200)} hours left to use this year.");
+    break;
+    ```
+-   Add a case for `CallInSickToday`, enter the following code there:
+    ```C#
+    // For the purpose of this workshop we only send a confirmation message.
+    await turnContext.SendActivityAsync($"Alright, I've notified your manager, get better soon!");
+    break;
+    ```
+
+---
+
+### Wrap up
+
+In this lab you created a LUIS application including some intents, you wrote your own custom middleware and implemented it within the logic of the bot.
+
+You can check your solution with the [finished solution](../Resources/FinishedSolutions/Lab02).
+
+<br>
+
+[Back to the overview](../README.md)

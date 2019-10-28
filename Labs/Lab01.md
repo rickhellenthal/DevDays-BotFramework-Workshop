@@ -172,12 +172,16 @@ In this function we want to check whether the name of the user is already known,
 
 **2.3 Recognize a returning user)**
 
--   After the if-statement in the `OnMessageActivityAsync` in function in `DevDaysBot.cs`, add a switch-statement for the value of `turnContext.Activity.Text.ToLower()`. - In the default of this switch-statement, use `await turnContext.SendActivityAsync()` to send a message from the bot which says something like `I'm sorry {userProfile.Name}, I don't understand that.`
+-   After the if-statement in the `OnMessageActivityAsync` in function in `DevDaysBot.cs`, add a switch-statement for the value of `turnContext.Activity.Text.ToLower()`. In the default of this switch-statement, use `await turnContext.SendActivityAsync()` to send a message from the bot which says something like `I'm sorry {userProfile.Name}, I don't understand that.` For now this default statement is the only statement in the switch.
+
     <br/>
+
 -   In the Bot Emulator, select `Restart with same user ID` to simulate a new conversation with the same user. Notice how the the bot starts the conversation by asking our name. Since our name is already known, we don't want that, we want the bot to welcome us back. Lets add that.
 
-![lab01 - Emulator restart with same user ID](../Resources/Images/Lab01_04.PNG)
-<br/>
+> **How to restart with the same user ID.**
+> Select the dropdown next to `Restart conversation` to see the option to restart with the same user ID.
+>
+> ![lab01 - Emulator restart with same user ID](../Resources/Images/Lab01_04.PNG) > <br/>
 
 -   Replace the implementation of the `OnMembersAddedAsync` function in `DevDaysBot.cs` with the following:
 
@@ -207,13 +211,17 @@ In this function we want to check whether the name of the user is already known,
     }
     ```
 
+<br>
+
+Now our bot will ask for our name if this is not yet known, otherwise it will greet the returning user. Nice work!
+
 <br/>
 
 **2.4 Add responses)**
 
 -   In the switch-statement in the `OnMessageActivityAsync` function, add two cases:
-    -   A case for `hello`, greet the user here
-    -   A case for `bye`, say goodbye to the user here
+    -   A case for `hello`, greet the user by sending a message here
+    -   A case for `bye`, say goodbye to the user by sending a message here
 
 The bot will now understand these 'commands' and will know how to act on them. Later on we will add more complex commands.
 
@@ -226,3 +234,7 @@ The bot will now understand these 'commands' and will know how to act on them. L
 In this lab you created a chat bot which can recognize a returning user and handle a few simple commands. Nice job!
 
 In the next lab we will integrate [LUIS](https://azure.microsoft.com/nl-nl/services/cognitive-services/language-understanding-intelligent-service/) with our bot.
+
+<br>
+
+[Back to the overview](../README.md)
