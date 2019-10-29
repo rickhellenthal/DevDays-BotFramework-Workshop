@@ -117,7 +117,7 @@ Ok, so the user is now prompted to enter their name, but how do we store the res
 
 Alright, so we set up the state, now it's time to interact with it and store the name of the user.
 
-In the `OnMembersAddedAsync` function we ask the user for their name, because of this we have to set our `PromptedForName` property in our `conversationState`. To do this we need to access the state, for this we have accessors.
+In the `OnMembersAddedAsync` function we ask the user for their name, because of this we have to set our `PromptedForName` property in our `conversationState`. To do this we need to access the state, for this we have [accessors](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-state?view=azure-bot-service-4.0&tabs=csharp#add-state-property-accessors).
 
 -   at the top of the `OnMembersAddedAsync` function, implement the code below. This allows us to interact with the `conversationData`.
 
@@ -181,7 +181,7 @@ In this function we want to check whether the name of the user is already known,
 > **How to restart with the same user ID.**
 > Select the dropdown next to `Restart conversation` to see the option to restart with the same user ID.
 >
-> ![lab01 - Emulator restart with same user ID](../Resources/Images/Lab01_04.PNG) > <br/>
+> ![lab01 - Emulator restart with same user ID](../Resources/Images/Lab01_04.PNG) <br/>
 
 -   Replace the implementation of the `OnMembersAddedAsync` function in `DevDaysBot.cs` with the following:
 
@@ -233,8 +233,16 @@ The bot will now understand these 'commands' and will know how to act on them. L
 
 In this lab you created a chat bot which can recognize a returning user and handle a few simple commands. Nice job!
 
-In the next lab we will integrate [LUIS](https://azure.microsoft.com/nl-nl/services/cognitive-services/language-understanding-intelligent-service/) with our bot.
+In the [next lab](./Lab02.md) we will integrate [LUIS](https://azure.microsoft.com/nl-nl/services/cognitive-services/language-understanding-intelligent-service/) with our bot.
 
 <br>
 
 [Back to the overview](../README.md)
+
+---
+
+### Already done?
+
+You're fast! If you want you can take a look at [dialogs within the Bot Framework](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-dialog?view=azure-bot-service-4.0) and [how to implement them](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-dialog-manage-conversation-flow?view=azure-bot-service-4.0&tabs=csharp). Try to implement it in your project.
+
+Dialogs are a central concept within the Bot Framework, using dialogs is a way to manage the conversations your bot has with its users, and keep it more organized. Read more about dialogs by following the links above!

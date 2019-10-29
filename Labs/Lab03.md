@@ -31,7 +31,7 @@ But how will our bot know which of these services to approach? When should it go
 -   Create a new folder in the solution called `CognitiveModels`.
 -   Open a new terminal and navigate to the newly created folder
 -   run `npm i -g botdispatch`
--   run the following command. For the filename you can enter 'dispatcher'. The luisAuthroingKey is located under 'Azure Resources' in the LUIS portal under the label 'primary key'.
+-   run the command as stated below. For the filename you can enter `dispatcher`. The `luisAuthroingKey` is located under `Azure Resources` in the LUIS portal under the label `primary key`.
     ```
     dispatch init -n <filename-to-create> --luisAuthoringKey "<your-luis-key>" --luisAuthoringRegion westeurope
     ```
@@ -216,8 +216,6 @@ To keep our services organized, we will create a seperate file where we define t
 
 <br>
 
-The casual chit-chat like a greeting, a goodbye, et cetera, will now be handled by the QnA Maker service.
-
 -   Change the switch-statement and the retrieval of information from the TurnContext in `OnMessageActivityAsync` to look like this:
 
     ```C#
@@ -240,6 +238,8 @@ The casual chit-chat like a greeting, a goodbye, et cetera, will now be handled 
     }
     ```
 
+The casual chit-chat like a greeting, a goodbye, et cetera, will now be handled by the QnA Maker service. LUIS will take on the responibility of identiying the more complex intents of the user which require more logic to be excecuted.
+
 ---
 
 ### Wrap up
@@ -253,3 +253,11 @@ You can check your solution with the [finished solution](../Resources/FinishedSo
 <br>
 
 [Back to the overview](../README.md)
+
+---
+
+### Already done?
+
+Wow!a I'm afraid I don't have much more material for you. You can use this time to either relax a bit or take a deeper look into the QnA Maker or any other topic we discussed during this workshop.
+
+If you haven't already, take a look into [dialogs within the Bot Framework](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-dialog?view=azure-bot-service-4.0) and [how to implement them](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-dialog-manage-conversation-flow?view=azure-bot-service-4.0&tabs=csharp), try it if you like! Or take a look at [entities within LUIS](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-concept-entity-types) and implement a simple entity in your application, see [how here](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-how-to-add-entities).

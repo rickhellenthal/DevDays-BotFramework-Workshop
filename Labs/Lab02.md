@@ -21,7 +21,7 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab02)
 
 **1.1 Creating the LUIS application)**
 
--   Navigate to [LUIS portal](https://eu.luis.ai)
+-   Navigate to [LUIS eu portal](https://eu.luis.ai)
 -   Click on `Create new app`
     -   Choose any name you like, in this workshop we'll use `DevDaysBot`
     -   Select the culture (languague) you want to use, in this workshop we'll use english
@@ -60,7 +60,7 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab02)
 Now that we have some intents set up we can train our LUIS application to try to assign incoming utterances to its known intents. When this finished, you can test the model by pressing `Test`.
 
 -   Click `Train` to train your LUIS model
--   Publish your LUIS model by pressing `Publish`, select production.
+-   Publish your LUIS model by pressing `Publish` and selecting `production`.
 
 -   Navigate to the `Manage` tab, under `Azure Resources`, copy the following values:
     -   Primary key (in blue)
@@ -99,17 +99,17 @@ First of all, we'll need to install a NuGet package which will allow us to easil
 -   Add a private readonly LuisRecognizer property and a constructor. The values we use to create the LuisApplication are retrieved from the `appsettings.json`.
 
     ```C#
-        private readonly LuisRecognizer luisRecognizer;
+    private readonly LuisRecognizer luisRecognizer;
 
-        public IntentRecognizerMiddleware(IConfiguration configuration)
-        {
-            var luisApplication = new LuisApplication(
-                configuration["LuisAppId"],
-                configuration["LuisAPIKey"],
-                configuration["LuisAPIHostName"]);
+    public IntentRecognizerMiddleware(IConfiguration configuration)
+    {
+        var luisApplication = new LuisApplication(
+            configuration["LuisAppId"],
+            configuration["LuisAPIKey"],
+            configuration["LuisAPIHostName"]);
 
-            luisRecognizer = new LuisRecognizer(luisApplication);
-        }
+        luisRecognizer = new LuisRecognizer(luisApplication);
+    }
     ```
 
 -   Next, lets implement the `OnTurnAsync` function. This will use the LuisRecognizer to access our LUIS application and pass the message of the user. Using the response we retrieve the highest scoring intent and add it to the `TurnState`. This will allow us to retrieve this value in our `DevDaysBot.cs` file.
@@ -176,6 +176,14 @@ In this lab you created a LUIS application including some intents, you wrote you
 
 You can check your solution with the [finished solution](../Resources/FinishedSolutions/Lab02).
 
+In the [next lab](./Lab03.md) we'll integrate a another cognitive service called [QnA Maker](https://www.qnamaker.ai/), and make this work alongside LUIS using the dispatch tool to further improve our bot.
+
 <br>
 
 [Back to the overview](../README.md)
+
+---
+
+### Already done?
+
+Unbelievable! If you want you can take a look at [entities within LUIS](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-concept-entity-types) and implement a simple entity in your application, see [how here](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-how-to-add-entities). Try to use this from within your bot.
