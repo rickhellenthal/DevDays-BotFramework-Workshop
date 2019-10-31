@@ -2,7 +2,7 @@
 
 _Workshop at ilionx's DevDays_
 
-In this lab you'll ...
+In this lab you'll integrate an existing QnA Maker service with your bot to further improve the user experience.
 
 The finished solutions [can be found here](../Resources/FinishedSolutions/Lab03) and are available for you to compare your work, or to take a look when you're having difficulties executing the assignments.
 
@@ -26,11 +26,19 @@ But how will our bot know which of these services to approach? When should it go
 
 ![lab03 - QnA Example Image](../Resources/Images/Lab03_01.PNG)
 
-**1.1 Dispatch tool)**
+**1.1 Change LUIS model)**
+
+We currently have our LUIS model setup to handle `Greeting` and `Goodbye` next to `GetLeaveBalance` and `CallInSickToday`.
+If we think about it, the intents `Greeting` and `Goodbye` don't require logic and can be easily answered with one static word or sentence.
+Therefore, these fit better in the QnA Maker knowledgebase than in the LUIS model.
+
+-   Remove the `Greeting` and `Goodbye` intent.
+
+**1.2 Dispatch tool)**
 
 -   Create a new folder in the solution called `CognitiveModels`.
 -   Open a new terminal and navigate to the newly created folder
--   run `npm i -g botdispatch`
+-   run `npm i botdispatch` (or `npm i -g botdispatch`)
 -   run the command as stated below. For the filename you can enter `dispatcher`. The `luisAuthroingKey` is located under `Azure Resources` in the LUIS portal under the label `primary key`.
     ```
     dispatch init -n <filename-to-create> --luisAuthoringKey "<your-luis-key>" --luisAuthoringRegion westeurope
@@ -46,9 +54,11 @@ But how will our bot know which of these services to approach? When should it go
 -   run `dispatch create`
 -   When the script finished running, copy the `appId` value as shown in the terminal near the bottom. Replace the `LuisAppId` value in `appsettings.json` with the copied value.
 
-**1.2 BotServices - Setup)**
+**1.3 BotServices - Setup)**
 
 To keep our services organized, we will create a seperate file where we define the services that we use.
+
+-   Install the `Microsoft.Bot.Builder.AI.QnA` NuGet package.
 
 -   Create a `BotServices.cs` class file with the following implementation:
 
@@ -151,7 +161,7 @@ To keep our services organized, we will create a seperate file where we define t
 
 <br>
 
-**1.3 BotServices - Logic)**
+**1.4 BotServices - Logic)**
 
 -   In `DevDaysBot.cs` add the following property to the class.
     ```C#
@@ -258,6 +268,6 @@ You can check your solution with the [finished solution](../Resources/FinishedSo
 
 ### Already done?
 
-Wow!a I'm afraid I don't have much more material for you. You can use this time to either relax a bit or take a deeper look into the QnA Maker or any other topic we discussed during this workshop.
+Wow! I'm afraid I don't have any more assignments for you. You can use this time to either relax a bit or take a deeper look into the QnA Maker or any other topic we discussed during this workshop.
 
 If you haven't already, take a look into [dialogs within the Bot Framework](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-dialog?view=azure-bot-service-4.0) and [how to implement them](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-dialog-manage-conversation-flow?view=azure-bot-service-4.0&tabs=csharp), try it if you like! Or take a look at [entities within LUIS](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-concept-entity-types) and implement a simple entity in your application, see [how here](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/luis-how-to-add-entities).

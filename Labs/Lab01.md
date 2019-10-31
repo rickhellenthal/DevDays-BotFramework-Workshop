@@ -4,7 +4,7 @@ _Workshop at ilionx's DevDays_
 
 In this lab you'll get to know the Microsoft Bot Framework by creating a chat bot which can recognize a returning user, and can perform a few simple actions.
 
-The finished solutions [can be found here](../Resources/FinishedSolutions/Lab01) and are available for you to compare your work, or to take a look when you're having difficulties executing the assignments.
+The finished solutions [can be found here](../Resources/FinishedSolutions/Lab01) and are available for you to compare your work with. You can take a look at them when you're having difficulties executing the assignments.
 
 > [Full list of versions used in the workshop](../Resources/VersionsUsed.md)
 
@@ -30,10 +30,7 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab01)
     -   In `Startup.cs`, replace line 36 with `services.AddTransient<IBot, DevDaysBot>();`
         <br/>
 
--   Start the project and verify that it runs correctly, you should see this in your browser:
-
-![lab01 - New project](../Resources/Images/Lab01_02.PNG)
-<br/>
+-   Start the project and verify that it runs correctly, it should open up a browser window.
 
 **1.2 Setting up the Emulator)**
 
@@ -64,7 +61,7 @@ Our bot can't do much yet, lets add some functionality. In this assignment we wi
 
 **2.1 Setting up state)**
 
--   Currently we are receiving a _'Hello world!'_ message when entering a conversation with the bot. Here we want to ask for the name of the user. In `DevDaysBot.cs` change the text in the `SendActivityAsync` function to something like: `Hi there, I am the DevDaysBot! What's your name?`.
+-   Currently we are receiving a _'Hello world!'_ message when entering a conversation with the bot. Here we want to ask for the name of the user. In `DevDaysBot.cs` change the text in the `SendActivityAsync` function in `OnMembersAddedAsync` to something like: `Hi there, I am the DevDaysBot! What's your name?`.
 
 Ok, so the user is now prompted to enter their name, but how do we store the response? For this we will use the [state](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-state?view=azure-bot-service-4.0).
 
@@ -79,7 +76,7 @@ Ok, so the user is now prompted to enter their name, but how do we store the res
 
     <br/>
 
--   In `Startup.cs` add the code below in the `ConfigureServices` function.
+-   In `Startup.cs` add the following code in the `ConfigureServices` function:
     ```C#
     services.AddSingleton<IStorage, MemoryStorage>();
     services.AddSingleton<UserState>();
@@ -102,13 +99,13 @@ Ok, so the user is now prompted to enter their name, but how do we store the res
 
     ```C#
     public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
-        {
-            await base.OnTurnAsync(turnContext, cancellationToken);
+    {
+        await base.OnTurnAsync(turnContext, cancellationToken);
 
-            // Save any state changes that might have occured during the turn.
-            await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-            await _userState.SaveChangesAsync(turnContext, false, cancellationToken);
-        }
+        // Save any state changes that might have occured during the turn.
+        await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+        await _userState.SaveChangesAsync(turnContext, false, cancellationToken);
+    }
     ```
 
     <br/>
@@ -136,15 +133,15 @@ The next step is to handle the response of the user. In this case this means sto
 
     ```C#
     protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
-        {
-            // Extract the conversationData from the state accessors
-            var conversationStateAccessors = _conversationState.CreateProperty<ConversationData>(nameof(ConversationData));
-            var conversationData = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationData());
+    {
+        // Extract the conversationData from the state accessors
+        var conversationStateAccessors = _conversationState.CreateProperty<ConversationData>(nameof(ConversationData));
+        var conversationData = await conversationStateAccessors.GetAsync(turnContext, () => new ConversationData());
 
-            // Extract the userProfile from the state accessors
-            var userStateAccessors = _userState.CreateProperty<UserProfile>(nameof(UserProfile));
-            var userProfile = await userStateAccessors.GetAsync(turnContext, () => new UserProfile());
-        }
+        // Extract the userProfile from the state accessors
+        var userStateAccessors = _userState.CreateProperty<UserProfile>(nameof(UserProfile));
+        var userProfile = await userStateAccessors.GetAsync(turnContext, () => new UserProfile());
+    }
     ```
 
 <br/>
@@ -156,19 +153,21 @@ In this function we want to check whether the name of the user is already known,
 
     ```C#
     if (string.IsNullOrEmpty(userProfile.Name) && conversationData.PromptedForName)
-        {
-            userProfile.Name = turnContext.Activity.Text?.Trim();
-            conversationData.PromptedForName = false;
+    {
+        userProfile.Name = turnContext.Activity.Text?.Trim();
+        conversationData.PromptedForName = false;
 
-            // Acknowledge that we got their name.
-            await turnContext.SendActivityAsync($"Nice to meet you {userProfile.Name}!");
+        // Acknowledge that we got their name.
+        await turnContext.SendActivityAsync($"Nice to meet you {userProfile.Name}!");
 
-            // End the turn here.
-            return;
-        }
+        // End the turn here.
+        return;
+    }
     ```
 
-    <br/>
+-   Run your bot to check if it now asks for the name of the user, and handles the user's response as expected.
+
+<br/>
 
 **2.3 Recognize a returning user)**
 
@@ -176,14 +175,18 @@ In this function we want to check whether the name of the user is already known,
 
     <br/>
 
--   In the Bot Emulator, select `Restart with same user ID` to simulate a new conversation with the same user. Notice how the the bot starts the conversation by asking our name. Since our name is already known, we don't want that, we want the bot to welcome us back. Lets add that.
+-   In the Bot Emulator, enter your name when the bot asks for it, after that, select `Restart with same user ID` to simulate a new conversation with the bot as the same user. Notice how the the bot starts the conversation by asking our name again. Since our name is already known, we don't want this to happen, we want the bot to welcome us back instead. Lets add that.
+
+> Remember: The state of the bot is cleared each time the bot is turned off since we're using MemoryStorage to store it.
+
+<br>
 
 > **How to restart with the same user ID.**
 > Select the dropdown next to `Restart conversation` to see the option to restart with the same user ID.
 >
 > ![lab01 - Emulator restart with same user ID](../Resources/Images/Lab01_04.PNG) <br/>
 
--   Replace the implementation of the `OnMembersAddedAsync` function in `DevDaysBot.cs` with the following:
+-   Replace the implementation of the `OnMembersAddedAsync` function in `DevDaysBot.cs` with the following, take your time to understand the code:
 
     ```C#
     // Extract the conversationData from the state accessors
@@ -227,6 +230,8 @@ The bot will now understand these 'commands' and will know how to act on them. L
 
 ![lab01 - responses](../Resources/Images/Lab01_05.PNG)
 
+-   Run your bot, enter your name, and verify that the bot responds as expected when you enter `hello` or `bye`
+
 ---
 
 ### Wrap up
@@ -243,6 +248,6 @@ In the [next lab](./Lab02.md) we will integrate [LUIS](https://azure.microsoft.c
 
 ### Already done?
 
-You're fast! If you want you can take a look at [dialogs within the Bot Framework](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-dialog?view=azure-bot-service-4.0) and [how to implement them](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-dialog-manage-conversation-flow?view=azure-bot-service-4.0&tabs=csharp). Try to implement it in your project.
+Nice work! Take a look at [dialogs within the Bot Framework](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-dialog?view=azure-bot-service-4.0) and [how to implement them](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-dialog-manage-conversation-flow?view=azure-bot-service-4.0&tabs=csharp). Try to implement it in your project.
 
 Dialogs are a central concept within the Bot Framework, using dialogs is a way to manage the conversations your bot has with its users, and keep it more organized. Read more about dialogs by following the links above!

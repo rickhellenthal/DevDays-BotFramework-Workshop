@@ -6,9 +6,9 @@ _Workshop at ilionx's DevDays_
 
 Welcome to the workshop about smart bots!
 
-In this workshop you will get to know the Microsoft Bot Framework and learn how to create your own bot and integrate cognitive services to make it smart.
+In this workshop you will get to know the Microsoft Bot Framework, learn how to create your own bot, and integrate cognitive services to make it smart.
 
-You'll execute two different labs which exists of multiple assignments, these labs will teach you how to develop using the Bot Framework. Finished solutions [can be found here](./Resources/FinishedSolutions) and are available for you to compare your work, or to take a look when you're having difficulties executing the assignments.
+The workshop exists of three labs, these labs will teach you how to develop using the Bot Framework. Finished solutions of these labs [can be found here](./Resources/FinishedSolutions) and are available for you to compare your work with. You can take a look at them when you're having difficulties executing the assignments.
 
 #### **Labs**
 

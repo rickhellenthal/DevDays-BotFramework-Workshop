@@ -22,6 +22,10 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab02)
 **1.1 Creating the LUIS application)**
 
 -   Navigate to [LUIS eu portal](https://eu.luis.ai)
+
+> If you don't have an Azure account yet you can use LUIS using a 3 month free trial, select `Continue using your trial key` to use this free trial.
+> ![LUIS trial](../Resources/Images/Lab02_05.PNG)
+
 -   Click on `Create new app`
     -   Choose any name you like, in this workshop we'll use `DevDaysBot`
     -   Select the culture (languague) you want to use, in this workshop we'll use english
@@ -43,15 +47,10 @@ The finished solutions [can be found here](../Resources/FinishedSolutions/Lab02)
 
 ![lab02 - LUIS portal Greeting intent](../Resources/Images/Lab02_03.PNG)
 
+-   Add a `Goodbye` intent, add utterances like _"see you later"_.
 -   Add a `GetLeaveBalance` intent, add utterances like _"How many days do I still have off?"_.
 -   Add a `CallInSickToday` intent, add utterances like _"I'm sick so I can't come to work."_.
 -   In the `None` intent, add a couple of random utterances that don't have to do anything with our bot.
--   Add a `Help` intent, we will use this to enable the bot to explain what its purpose is. Example utterances are:
-    -   _Who are you?_
-    -   _What can you do?_
-    -   _Help_
-    -   _Huh?_
-    -   _I don't understand_
 
 <br>
 
@@ -94,9 +93,9 @@ First of all, we'll need to install a NuGet package which will allow us to easil
 
 <br>
 
--   Create a new folder called `Middleware`. In this folder, create a new class file called `IntentRecognizerMiddleware.cs`. This class should implement the `IMiddleware` interface.
+-   Create a new folder called `Middleware`. In this folder, create a new class file called `IntentRecognizerMiddleware.cs`. This class should implement the `IMiddleware` interface of the `Microsoft.Bot.Builder` namespace. Import the required namespaces.
 
--   Add a private readonly LuisRecognizer property and a constructor. The values we use to create the LuisApplication are retrieved from the `appsettings.json`.
+-   Add a private readonly LuisRecognizer property and a constructor. The values we use to create the LuisApplication are retrieved from the `appsettings.json`. Import the required namespaces.
 
     ```C#
     private readonly LuisRecognizer luisRecognizer;
@@ -112,20 +111,20 @@ First of all, we'll need to install a NuGet package which will allow us to easil
     }
     ```
 
--   Next, lets implement the `OnTurnAsync` function. This will use the LuisRecognizer to access our LUIS application and pass the message of the user. Using the response we retrieve the highest scoring intent and add it to the `TurnState`. This will allow us to retrieve this value in our `DevDaysBot.cs` file.
+-   Next, lets implement the `OnTurnAsync` function. This will use the LuisRecognizer to access our LUIS application and pass the message of the user. The highest scoring intent is retrieved from the response and is added to the `TurnState`. This will allow us to retrieve this value in our `DevDaysBot.cs` file. Import the required namespaces.
 
     ```C#
     public async Task OnTurnAsync(ITurnContext turnContext, NextDelegate next, CancellationToken cancellationToken = default)
+    {
+        if (!string.IsNullOrEmpty(turnContext.Activity.Text))
         {
-            if (!string.IsNullOrEmpty(turnContext.Activity.Text))
-            {
-                var recognizerResult = await luisRecognizer.RecognizeAsync(turnContext, cancellationToken);
-                var (intent, score) = recognizerResult.GetTopScoringIntent();
+            var recognizerResult = await luisRecognizer.RecognizeAsync(turnContext, cancellationToken);
+            var (intent, score) = recognizerResult.GetTopScoringIntent();
 
-                turnContext.TurnState.Add("Intent", intent);
-            }
-            await next(cancellationToken);
+            turnContext.TurnState.Add("Intent", intent);
         }
+        await next(cancellationToken);
+    }
     ```
 
 <br>
@@ -149,16 +148,16 @@ Middleware is added via adapters. The project template created an adapter for us
     ```C#
     string intent = turnContext.TurnState.Get<string>("Intent");
     ```
--   Alter the switch to use this intent as the expression.
+-   Alter the switch to use this intent as the expression, and match the cases to the different intents you created in your LUIS application.
 
--   Run the bot again and verify that the bot understands the `greeting`, `goodbye`, and `help` 'command'.
+-   Run the bot again and verify that the bot understands the `Greeting` and `Goodbye` 'command'.
 
 -   Add a case for `GetLeaveBalance`, enter the following code there:
     ```C#
     Random random = new Random();
     // In a real application we would want to fetch the remaining leave hours from an actual source.
     // For the purpose of this workshop a random number is generated.
-    await turnContext.SendActivityAsync($"You have {random.Next(1, 200)} hours left to use this year.");
+    await turnContext.SendActivityAsync($"Currently, your available leave balance is {random.Next(1, 200)} hours this year.");
     break;
     ```
 -   Add a case for `CallInSickToday`, enter the following code there:
